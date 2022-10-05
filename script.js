@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			.then(() => {
 				//Update area
 				if (firstInput.value != '' && secondInput.value != '') {
-					secondInput.value = calculateRate(firstInput.value, firstValue, secondValue, exRateOfFirstValue);
+					secondInput.value = calculateRate(firstInput.value, secondValue, exRateOfFirstValue);
 				}
 			});
 		}
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			.then(() => {
 				//Update area
 				if (firstInput.value != '' && secondInput.value != '') {
-					firstInput.value = calculateRate(secondInput.value, firstValue, secondValue, exRateOfSecondValue);
+					firstInput.value = calculateRate(secondInput.value, firstValue, exRateOfSecondValue);
 				}
 			});
 		}
@@ -91,14 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	function calculateRate(inputValue, firstValue, secondValue, exRate) {
-		if (exRate.conversion_rates[firstValue] < 1) {
-			return (inputValue * exRate.conversion_rates[firstValue]).toFixed(4);
-		} else if (exRate.conversion_rates[secondValue] > 1) {
-			return (inputValue * exRate.conversion_rates[secondValue]).toFixed(4);
-		} else {
-			return inputValue;
-		}
+	function calculateRate(inputValue, curr, exRate) {
+		return (inputValue * exRate.conversion_rates[curr]).toFixed(4);
 	}
 
 	// Calculating rates
@@ -107,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (firstValue && secondValue) {
 			firstInput.addEventListener('input', () => {
 				if (firstValue != 'none' && secondValue != 'none') {
-					secondInput.value = calculateRate(firstInput.value, firstValue, secondValue, exRateOfFirstValue);
+					secondInput.value = calculateRate(firstInput.value, secondValue, exRateOfFirstValue);
 				}
 			});
 		}
@@ -116,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (firstValue && secondValue) {
 			secondInput.addEventListener('input', () => {
 				if (firstValue != 'none' && secondValue != 'none') {
-					firstInput.value = calculateRate(secondInput.value, firstValue, secondValue, exRateOfSecondValue);
+					firstInput.value = calculateRate(secondInput.value, firstValue, exRateOfSecondValue);
 				}
 			});
 		}
