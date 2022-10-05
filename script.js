@@ -7,7 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		  secondSelect = document.querySelector('[data-select-2]'),
 		  selectFirstOptions = firstSelect.querySelectorAll('option'),
 		  selectSecondOptions = secondSelect.querySelectorAll('option'),
-		  loading = document.querySelector('.status');
+		  loading = document.querySelector('.status'),
+		  firstInfo = document.querySelector('[data-info-1]'),
+		  secondInfo = document.querySelector('[data-info-2]'),
+		  currNames = {
+			'USD': 'Доллар США',
+			'EUR': 'Евро',
+			'RUB': 'Российский рубль',
+			'BYN': 'Белорусский рубль',
+			'JOD': 'Иорданский динар',
+			'KZT': 'Казахский тенге',
+			'TRY': 'Турецкая лира'
+		  };
 
 	let firstValue, secondValue, exRateOfFirstValue, exRateOfSecondValue;
 
@@ -114,5 +125,20 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 			});
 		}
+	});
+
+	// information about currency
+
+	firstInfo.addEventListener('click', () => {
+		firstInfo.innerHTML = currNames[firstValue];
+		setTimeout(() => {
+			firstInfo.innerHTML = 'Что за валюта?';
+		}, 3000);
+	});
+	secondInfo.addEventListener('click', () => {
+		secondInfo.innerHTML = currNames[secondValue];
+		setTimeout(() => {
+			secondInfo.innerHTML = 'Что за валюта?';
+		}, 3000);
 	});
 });
