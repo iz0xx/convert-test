@@ -1,21 +1,124 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-	fetch('https://v6.exchangerate-api.com/v6/3b75513717b258598da70aca/pair/USD/BYN')
-	.then(response => response.json())
-	.then(response => {
-		const exRate = response,
-			  inputFirst = document.querySelector('[data-input-1]'),
-			  inputSecond = document.querySelector('[data-input-2]');
-		
-		inputFirst.addEventListener('input', () => {
-			inputSecond.value = (inputFirst.value * exRate.conversion_rate).toFixed(4);
-		});
+	const firstInput = document.querySelector('[data-input-1]'),
+		  secondInput = document.querySelector('[data-input-2]'),
+		  firstSelect = document.querySelector('[data-select-1]'),
+		  secondSelect = document.querySelector('[data-select-2]'),
+		  selectFirstOptions = firstSelect.querySelectorAll('option'),
+		  selectSecondOptions = secondSelect.querySelectorAll('option'),
+		  loading = document.querySelector('.status');
 
-		inputSecond.addEventListener('input', () => {
-			inputFirst.value = (inputSecond.value / exRate.conversion_rate).toFixed(4);
-		});
+	let firstValue, secondValue, exRateOfFirstValue, exRateOfSecondValue;
 
-		console.log(exRate);
+	// Choice of the currency
+
+	firstSelect.addEventListener('change', () => {
+		if (firstValue != 'none') {
+			selectSecondOptions.forEach(item => {
+				if (item.attributes[`data-${firstValue}`]) {
+					item.removeAttribute('disabled');
+				}
+			});
+		}
+		firstValue = firstSelect.value;
+
+		// Getting exchange rate
+
+		if (firstValue != 'none') {
+			loading.classList.toggle('hidden');
+			fetch(`https://v6.exchangerate-api.com/v6/3b75513717b258598da70aca/latest/${firstValue}`)
+			.then(response => response.json())
+			.then(response => {
+				loading.classList.toggle('hidden');
+				exRateOfFirstValue = response;
+			})
+			.then(() => {
+				//Update area
+				if (firstInput.value != '' && secondInput.value != '') {
+					secondInput.value = calculateRate(firstInput.value, firstValue, secondValue, exRateOfFirstValue);
+				}
+			});
+		}
+
+		// Disable choosen
+
+		if (firstValue != 'none') {
+			selectSecondOptions.forEach(item => {
+				if (item.attributes[`data-${firstValue}`]) {
+					item.setAttribute('disabled', '');
+				}
+			});
+		}
+	});
+	secondSelect.addEventListener('change', () => {
+		if (secondValue != 'none') {
+			selectFirstOptions.forEach(item => {
+				if (item.attributes[`data-${secondValue}`]) {
+					item.removeAttribute('disabled');
+
+				}
+			});
+		}
+		secondValue = secondSelect.value;
+
+		// Getting exchange rate
+
+		if (secondValue != 'none') {
+			loading.classList.toggle('hidden');
+			fetch(`https://v6.exchangerate-api.com/v6/3b75513717b258598da70aca/latest/${secondValue}`)
+			.then(response => response.json())
+			.then(response => {
+				loading.classList.toggle('hidden');
+				exRateOfSecondValue = response;
+			})
+			.then(() => {
+				//Update area
+				if (firstInput.value != '' && secondInput.value != '') {
+					firstInput.value = calculateRate(secondInput.value, firstValue, secondValue, exRateOfSecondValue);
+				}
+			});
+		}
+
+		// Disable choosen
+
+		if (secondValue != 'none') {
+			selectFirstOptions.forEach(item => {
+				if (item.attributes[`data-${secondValue}`]) {
+					item.setAttribute('disabled', '');
+				}
+			});
+		}
+	});
+
+	function calculateRate(inputValue, firstValue, secondValue, exRate) {
+		if (exRate.conversion_rates[firstValue] < 1) {
+			return (inputValue * exRate.conversion_rates[firstValue]).toFixed(4);
+		} else if (exRate.conversion_rates[secondValue] > 1) {
+			return (inputValue * exRate.conversion_rates[secondValue]).toFixed(4);
+		} else {
+			return inputValue;
+		}
+	}
+
+	// Calculating rates
+
+	firstInput.addEventListener('focus', () => {
+		if (firstValue && secondValue) {
+			firstInput.addEventListener('input', () => {
+				if (firstValue != 'none' && secondValue != 'none') {
+					secondInput.value = calculateRate(firstInput.value, firstValue, secondValue, exRateOfFirstValue);
+				}
+			});
+		}
+	});
+	secondInput.addEventListener('focus', () => {
+		if (firstValue && secondValue) {
+			secondInput.addEventListener('input', () => {
+				if (firstValue != 'none' && secondValue != 'none') {
+					firstInput.value = calculateRate(secondInput.value, firstValue, secondValue, exRateOfSecondValue);
+				}
+			});
+		}
 	});
 });

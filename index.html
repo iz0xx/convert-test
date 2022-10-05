@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -11,14 +11,27 @@
 	<div class="wrapper">
 		<div class="row">
 			<div class="column">
-				<div class="name">USD</div>
+				<select name="currency" data-select-1>
+					<option value="none" data-none>---</option>
+					<option value="USD" data-USD>USD</option>
+					<option value="EUR" data-EUR>EUR</option>
+					<option value="RUB" data-RUB>RUB</option>
+					<option value="BYN" data-BYN>BYN</option>
+				</select>
 				<input type="text" placeholder="введите количество валюты" data-input-1>
 			</div>
 			<div class="column">
-				<div class="name">BYN</div>
+				<select name="currency" data-select-2>
+					<option value="none" data-none>---</option>
+					<option value="USD" data-USD>USD</option>
+					<option value="EUR" data-EUR>EUR</option>
+					<option value="RUB" data-RUB>RUB</option>
+					<option value="BYN" data-BYN>BYN</option>
+				</select>
 				<input type="text" placeholder="введите количество валюты" data-input-2>
 			</div>
 		</div>
+		<div class="status hidden">Загружаем данные с сервера, подождите...</div>
 	</div>
 
 	<script src="script.js"></script>
