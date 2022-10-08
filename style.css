@@ -16,15 +16,6 @@ html, body {
 	justify-content: center;
 	align-items: center;
 }
-.toYopta {
-	position: absolute;
-	right: 0;
-	top: 100%;
-	color: rgba(0, 0, 0, .2);
-	cursor: pointer;
-	font-size: 10px;
-	text-decoration: none;
-}
 
 .name {
 	text-align: center;
@@ -62,3 +53,14 @@ input::placeholder {
 	margin-top: .3rem;
 	cursor: pointer;
 }
+/*
+.toYopta {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	color: rgba(0, 0, 0, .2);
+	cursor: pointer;
+	font-size: 10px;
+	text-decoration: none;
+} 
+*/
